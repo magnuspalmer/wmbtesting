@@ -1,0 +1,50 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'groovy'
+
+sourceCompatibility = 1.6
+version = '1.0'
+def env = System.getenv()
+
+repositories {
+	mavenCentral()
+	maven {	url "https://repository.apache.org/content/repositories/snapshots/" }
+	maven { url "http://maven.springframework.org/release" }
+}
+
+dependencies {
+	final SPRING_VERSION = '3.2.2.RELEASE'
+	final CAMEL_VERSION = '2.11-SNAPSHOT'
+	final SPOCK_VERSION = '0.7-groovy-2.0'
+	final SLF4J_VERSION = '1.7.5'
+	final GROOVY_VERSION= '2.1.1'
+	final LOGBACK_VERSION = '1.0.11'
+	final XMLUNIT_VERSION = '1.3'
+
+	//	logging spring cleaning - use slf4j instead of commons-logging
+	runtime group: 'org.slf4j', name: 'jcl-over-slf4j', version: SLF4J_VERSION
+	runtime group: 'ch.qos.logback', name: 'logback-classic', version: LOGBACK_VERSION
+	compile group: 'org.slf4j', name: 'slf4j-api', version: SLF4J_VERSION
+
+
+	testCompile "org.springframework:spring-context:$SPRING_VERSION"
+	testCompile group: 'org.springframework', name: 'spring-test', version: SPRING_VERSION
+	testCompile "org.apache.camel:camel-core:$CAMEL_VERSION"
+	testCompile "org.apache.camel:camel-groovy:$CAMEL_VERSION"
+	testCompile "org.apache.camel:camel-jms:$CAMEL_VERSION"
+	groovy "org.codehaus.groovy:groovy-all:$GROOVY_VERSION"
+	testCompile "org.spockframework:spock-core:$SPOCK_VERSION"
+	testCompile "org.spockframework:spock-spring:$SPOCK_VERSION"
+	testCompile "xmlunit:xmlunit:$XMLUNIT_VERSION"
+		
+	//WMQ
+//	runtime files('libs/a.jar', 'libs/b.jar')
+	testCompile fileTree(dir: env['MQ_JAVA_LIB_PATH'], include: '*.jar')
+	
+}
+
+configurations {
+	all*.exclude module: 'commons-logging' // we use slf4j instead
+}
+
+task wrapper(type: Wrapper) { gradleVersion = '1.5' }
