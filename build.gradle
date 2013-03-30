@@ -5,11 +5,14 @@ apply plugin: 'groovy'
 sourceCompatibility = 1.6
 version = '1.0'
 def env = System.getenv()
+String MQ_JAVA_LIB_DIR = env['MQ_JAVA_INSTALL_PATH'] + '/lib'
 
 repositories {
-	mavenCentral()
-	maven {	url "https://repository.apache.org/content/repositories/snapshots/" }
+	
 	maven { url "http://maven.springframework.org/release" }
+  mavenCentral()
+  maven {	url "https://repository.apache.org/content/repositories/snapshots/" }
+  
 }
 
 dependencies {
@@ -22,13 +25,12 @@ dependencies {
 	final XMLUNIT_VERSION = '1.3'
 
 	//	logging spring cleaning - use slf4j instead of commons-logging
-	runtime group: 'org.slf4j', name: 'jcl-over-slf4j', version: SLF4J_VERSION
-	runtime group: 'ch.qos.logback', name: 'logback-classic', version: LOGBACK_VERSION
-	compile group: 'org.slf4j', name: 'slf4j-api', version: SLF4J_VERSION
-
+	runtime "org.slf4j:jcl-over-slf4j:$SLF4J_VERSION"
+	runtime "ch.qos.logback:logback-classic:$LOGBACK_VERSION"
+	compile "org.slf4j:slf4j-api:$SLF4J_VERSION"
 
 	testCompile "org.springframework:spring-context:$SPRING_VERSION"
-	testCompile group: 'org.springframework', name: 'spring-test', version: SPRING_VERSION
+	testCompile "org.springframework:spring-test:$SPRING_VERSION"
 	testCompile "org.apache.camel:camel-core:$CAMEL_VERSION"
 	testCompile "org.apache.camel:camel-groovy:$CAMEL_VERSION"
 	testCompile "org.apache.camel:camel-jms:$CAMEL_VERSION"
@@ -38,8 +40,7 @@ dependencies {
 	testCompile "xmlunit:xmlunit:$XMLUNIT_VERSION"
 		
 	//WMQ
-//	runtime files('libs/a.jar', 'libs/b.jar')
-	testCompile fileTree(dir: env['MQ_JAVA_LIB_PATH'], include: '*.jar')
+	testCompile fileTree(dir: MQ_JAVA_LIB_DIR, include: '*.jar')
 	
 }
 
