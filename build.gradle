@@ -8,11 +8,10 @@ def env = System.getenv()
 String MQ_JAVA_LIB_DIR = env['MQ_JAVA_INSTALL_PATH'] + '/lib'
 
 repositories {
-	
+
 	maven { url "http://maven.springframework.org/release" }
-  mavenCentral()
-  maven {	url "https://repository.apache.org/content/repositories/snapshots/" }
-  
+	mavenCentral()
+	maven {	url "https://repository.apache.org/content/repositories/snapshots/" }
 }
 
 dependencies {
@@ -33,15 +32,17 @@ dependencies {
 	testCompile "org.springframework:spring-test:$SPRING_VERSION"
 	testCompile "org.apache.camel:camel-core:$CAMEL_VERSION"
 	testCompile "org.apache.camel:camel-groovy:$CAMEL_VERSION"
+	testCompile "org.apache.camel:camel-spring-javaconfig:$CAMEL_VERSION"
 	testCompile "org.apache.camel:camel-jms:$CAMEL_VERSION"
+	testCompile "org.apache.camel:camel-test-spring:$CAMEL_VERSION"
 	groovy "org.codehaus.groovy:groovy-all:$GROOVY_VERSION"
 	testCompile "org.spockframework:spock-core:$SPOCK_VERSION"
 	testCompile "org.spockframework:spock-spring:$SPOCK_VERSION"
 	testCompile "xmlunit:xmlunit:$XMLUNIT_VERSION"
-		
+
 	//WMQ
 	testCompile fileTree(dir: MQ_JAVA_LIB_DIR, include: '*.jar')
-	
+
 }
 
 configurations {
