@@ -2,7 +2,7 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'groovy'
 
-sourceCompatibility = 1.6
+sourceCompatibility = 1.7
 version = '1.0'
 def env = System.getenv()
 String MQ_JAVA_LIB_DIR = env['MQ_JAVA_INSTALL_PATH'] + '/lib'
