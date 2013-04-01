@@ -50,6 +50,8 @@ dependencies {
 
 	testCompile "org.springframework:spring-context:$SPRING_VERSION"
 	testCompile "org.springframework:spring-test:$SPRING_VERSION"
+	testCompile "org.springframework:spring-tx:$SPRING_VERSION"
+	testCompile "org.springframework:spring-jms:$SPRING_VERSION"
 	testCompile "org.apache.camel:camel-core:$CAMEL_VERSION"
 	testCompile "org.apache.camel:camel-groovy:$CAMEL_VERSION"
 	testCompile "org.apache.camel:camel-spring-javaconfig:$CAMEL_VERSION"

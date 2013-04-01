@@ -23,20 +23,9 @@ import static org.custommonkey.xmlunit.XMLAssert.*
 
 import org.apache.camel.CamelContext
 import org.apache.camel.ProducerTemplate
-import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.impl.DefaultCamelContext
-import org.apache.camel.spring.javaconfig.SingleRouteCamelConfiguration
-import org.apache.camel.test.spring.CamelSpringDelegatingTestContextLoader
 import org.custommonkey.xmlunit.*
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.ComponentScan
-import org.springframework.context.annotation.Configuration
-import org.springframework.context.annotation.Import
 import org.springframework.test.context.ContextConfiguration
-import org.apache.camel.spring.javaconfig.test.JavaConfigContextLoader
-import org.springframework.context.annotation.ImportResource
-
 
 import spock.lang.*
 
