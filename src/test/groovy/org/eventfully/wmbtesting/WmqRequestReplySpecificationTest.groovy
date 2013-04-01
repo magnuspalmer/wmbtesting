@@ -66,8 +66,8 @@ class WmqRequestReplySpecificationTest extends Specification {
 		assertXpathEvaluatesTo("Braithwaite", "/SaleEnvelope/SaleList/Invoice/Surname", reply)
 	}
 
-	@Unroll("Using input from #testFileName should return expected surname #expectedSurname")
-	def "Using Camel producer template with JMS for request/reply with multiple file inputs"() {
+	@Unroll
+	def "Using Camel producer template with JMS for request/reply :: test input file #testFileName should return expected surname #expectedSurname"() {
 
 		given: "A XML payload to send"
 		def testPayload = new File("src/test/resources/data/$testFileName")
