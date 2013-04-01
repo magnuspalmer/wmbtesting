@@ -24,7 +24,10 @@ import static org.custommonkey.xmlunit.XMLAssert.*
 import org.apache.camel.CamelContext
 import org.apache.camel.ProducerTemplate
 import org.custommonkey.xmlunit.*
+import org.junit.After;
+import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration
 
 import spock.lang.*
@@ -34,7 +37,15 @@ class WmqRequestReplySpecificationTest extends Specification {
 
 	@Autowired
 	CamelContext camelContext
+	
+	ProducerTemplate producer
 
+	@Before
+	public void setup() {
+		producer = camelContext.createProducerTemplate()
+	}
+
+	@Ignore
 	def "Using Camel producer template with JMS for request/reply"() {
 
 		given: "A XML payload to send"
@@ -53,5 +64,29 @@ class WmqRequestReplySpecificationTest extends Specification {
 		assertNotNull(reply)
 		and: "The payload contains the expected value"
 		assertXpathEvaluatesTo("Braithwaite", "/SaleEnvelope/SaleList/Invoice/Surname", reply)
+	}
+
+	@Unroll("Using input from #testFileName should return expected surname #expectedSurname")
+	def "Using Camel producer template with JMS for request/reply with multiple file inputs"() {
+
+		given: "A XML payload to send"
+		def testPayload = new File("src/test/resources/data/$testFileName")
+		and: "Request and reply queue names"
+		String requestQ = "GET_REQREP_IN"
+		String replyQ = "GET_REQREP_OUT"
+
+		when: "The request is sent"
+		def reply = producer.requestBody("wmq:$requestQ?replyTo=$replyQ&replyToType=Shared&useMessageIDAsCorrelationID=true&jmsMessageType=Text",
+				testPayload, String.class)
+
+		then: "A reply is received"
+		assertNotNull(reply)
+		and: "The payload contains the expected value"
+		assertXpathEvaluatesTo(expectedSurname, "/SaleEnvelope/SaleList/Invoice/Surname", reply)
+
+		where:
+		testFileName | expectedSurname
+		'request1.xml' | 'Braithwaite'
+		'request2.xml' | 'Palmer'
 	}
 }
