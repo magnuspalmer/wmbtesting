@@ -63,7 +63,7 @@ dependencies {
 	testCompile "xmlunit:xmlunit:$XMLUNIT_VERSION"
 
 	//WMQ
-	testCompile fileTree(dir: MQ_JAVA_LIB_DIR, include: '*.jar')
+	testCompile fileTree(dir: MQ_JAVA_LIB_DIR, include: 'com.ibm.mqjms.jar')
 
 }
 
