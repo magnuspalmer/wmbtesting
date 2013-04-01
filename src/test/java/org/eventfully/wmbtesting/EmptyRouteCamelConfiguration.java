@@ -41,6 +41,7 @@ public class EmptyRouteCamelConfiguration extends SingleRouteCamelConfiguration 
 
 	/**
 	 * An empty route, returning null causes NPE in the abstract CamelConfiguration parent.
+	 * As a side-effect it disables JMX since that is not needed when testing.
 	 */
 	@Override
 	public RouteBuilder route() {
@@ -48,6 +49,7 @@ public class EmptyRouteCamelConfiguration extends SingleRouteCamelConfiguration 
 
 			@Override
 			public void configure() throws Exception {
+				getContext().disableJMX();
 
 			}
 		};
