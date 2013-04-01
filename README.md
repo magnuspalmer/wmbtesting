@@ -24,12 +24,13 @@ Configuration:
 
 Edit the src/test/resources/wmq.properties if you have other connection params to your queuemanager.
 Default is:
-    qmgr.hostName=localhost
-    qmgr.port=2414
-    qmgr.queueManager=MB8QMGR
-    qmgr.channel=JMS.CHANNEL
-    #0 = binding, 1 = client, 8 = first binding, then client
-    qmgr.transportType=1
+
+     qmgr.hostName=localhost
+     qmgr.port=2414
+     qmgr.queueManager=MB8QMGR
+     qmgr.channel=JMS.CHANNEL
+     #0 = binding, 1 = client, 8 = first binding, then client
+     qmgr.transportType=1
 
 Building/testing with Gradle:
 -----------------------------
