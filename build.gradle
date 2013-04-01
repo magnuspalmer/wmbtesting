@@ -41,7 +41,7 @@ dependencies {
 	final SLF4J_VERSION = '1.7.5'
 	final GROOVY_VERSION= '2.1.1'
 	final LOGBACK_VERSION = '1.0.11'
-	final XMLUNIT_VERSION = '1.3'
+	final XMLUNIT_VERSION = '1.4'
 
 	//	logging spring cleaning - use slf4j instead of commons-logging
 	runtime "org.slf4j:jcl-over-slf4j:$SLF4J_VERSION"
