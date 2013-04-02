@@ -53,14 +53,16 @@ public class WmqConfig {
 	@Bean(name = "qmgr")
 	public com.ibm.mq.jms.MQConnectionFactory createWMQ1() throws JMSException {
 		MQConnectionFactory mqConnectionFactory = new MQConnectionFactory();
-		mqConnectionFactory.setHostName(env
-				.getRequiredProperty("qmgr.hostName"));
-		mqConnectionFactory.setPort(Integer.parseInt(env
-				.getRequiredProperty("qmgr.port")));
-		mqConnectionFactory.setQueueManager(env
-				.getRequiredProperty("qmgr.queueManager"));
-		mqConnectionFactory.setChannel(env.getRequiredProperty("qmgr.channel"));
-		mqConnectionFactory.setTransportType(WMQConstants.WMQ_CM_CLIENT);
+		mqConnectionFactory.setHostName(env.getProperty("qmgr.hostName",
+				"localhost"));
+		mqConnectionFactory.setPort(Integer.parseInt(env.getProperty(
+				"qmgr.port", "1414")));
+		mqConnectionFactory.setQueueManager(env.getProperty(
+				"qmgr.queueManager", ""));
+		mqConnectionFactory.setChannel(env.getProperty("qmgr.channel", ""));
+		mqConnectionFactory.setTransportType(Integer.parseInt(env.getProperty(
+				"qmgr.transportType",
+				String.valueOf(WMQConstants.WMQ_CM_BINDINGS_THEN_CLIENT))));
 
 		return mqConnectionFactory;
 	}
