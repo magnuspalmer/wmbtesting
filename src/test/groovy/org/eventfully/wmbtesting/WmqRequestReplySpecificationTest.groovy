@@ -42,6 +42,7 @@ class WmqRequestReplySpecificationTest extends Specification {
 
 	@Before
 	public void setup() {
+		XMLUnit.setIgnoreWhitespace(true)
 		producer = camelContext.createProducerTemplate()
 	}
 
@@ -96,11 +97,12 @@ class WmqRequestReplySpecificationTest extends Specification {
 
 		given: "A XML payload to send"
 		def testPayload = new File("src/test/resources/data/$testFileName")
+
 		and: "An expected reply XML payload"
 		def expectedPayload = new File("src/test/resources/data/$expectedFileName")
-		and: "Request and reply queue names"
-		String requestQ = "GET_REQREP_IN"
-		String replyQ = "GET_REQREP_OUT"
+
+		and: "Ignoring differences for configured element names"
+		DifferenceListener diffListener = new IgnoreNamedElementsDifferenceListener(ignoreNamedElementsNames.toListString())
 
 		when: "The request is sent"
 		def reply = producer.requestBody("wmq:$requestQ?replyTo=$replyQ&replyToType=Shared&useMessageIDAsCorrelationID=true&jmsMessageType=Text",
@@ -108,17 +110,16 @@ class WmqRequestReplySpecificationTest extends Specification {
 
 		then: "A reply is received"
 		assertNotNull(reply)
-		println reply
-		and: "The payload contains the expected value"
-		XMLUnit.setIgnoreWhitespace(true)
-		DifferenceListener diffListener = new IgnoreNamedElementsDifferenceListener("CompletionTime")
+
+		and: "The reply payload contains similar XML"
 		Diff myDiff = new Diff(expectedPayload.getText(), reply)
 		myDiff.overrideDifferenceListener(diffListener)
-		assertTrue("Reply XML matches control XML " + myDiff,
-				myDiff.similar())
+		assertXMLEqual("Same elements/attributes sequences, but some values may be ignored, normally time and dates.", myDiff, myDiff.similar())
 
 		where:
-		testFileName | expectedFileName
-		'request1.xml' | 'reply1.xml'
+		testFileName   | expectedFileName | requestQ 		| replyQ			| ignoreNamedElementsNames
+		'request1.xml' | 'reply1.xml'     | 'GET_REQREP_IN'	| 'GET_REQREP_OUT'	|  ['CompletionTime', 'SomeOtherElement']
+		'request2.xml' | 'reply2.xml'     | 'GET_REQREP_IN'	| 'GET_REQREP_OUT'	|  ['CompletionTime', 'SomeOtherElement']
+		
 	}
 }
