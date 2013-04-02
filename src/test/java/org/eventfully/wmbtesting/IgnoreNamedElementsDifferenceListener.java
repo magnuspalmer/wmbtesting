@@ -55,6 +55,6 @@ public final class IgnoreNamedElementsDifferenceListener implements
 
 	public void skippedComparison(Node node, Node node1) {
 		logger.debug("Skipping comparison between: " + node.getNodeName()
-				+ " and node: " + node1);
+				+ " and node: " + node1.getNodeName());
 	}
 }

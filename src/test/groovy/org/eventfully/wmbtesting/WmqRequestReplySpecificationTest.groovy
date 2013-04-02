@@ -37,7 +37,7 @@ class WmqRequestReplySpecificationTest extends Specification {
 
 	@Autowired
 	CamelContext camelContext
-	
+
 	ProducerTemplate producer
 
 	@Before
@@ -66,6 +66,7 @@ class WmqRequestReplySpecificationTest extends Specification {
 		assertXpathEvaluatesTo("Braithwaite", "/SaleEnvelope/SaleList/Invoice/Surname", reply)
 	}
 
+	@Ignore
 	@Unroll
 	def "Using Camel producer template with JMS for request/reply :: test input file #testFileName should return expected surname #expectedSurname"() {
 
@@ -88,5 +89,36 @@ class WmqRequestReplySpecificationTest extends Specification {
 		testFileName | expectedSurname
 		'request1.xml' | 'Braithwaite'
 		'request2.xml' | 'Palmer'
+	}
+
+	@Unroll
+	def "Using Camel producer template with JMS for request/reply :: test input file #testFileName should return similar XML"() {
+
+		given: "A XML payload to send"
+		def testPayload = new File("src/test/resources/data/$testFileName")
+		and: "An expected reply XML payload"
+		def expectedPayload = new File("src/test/resources/data/$expectedFileName")
+		and: "Request and reply queue names"
+		String requestQ = "GET_REQREP_IN"
+		String replyQ = "GET_REQREP_OUT"
+
+		when: "The request is sent"
+		def reply = producer.requestBody("wmq:$requestQ?replyTo=$replyQ&replyToType=Shared&useMessageIDAsCorrelationID=true&jmsMessageType=Text",
+				testPayload, String.class)
+
+		then: "A reply is received"
+		assertNotNull(reply)
+		println reply
+		and: "The payload contains the expected value"
+		XMLUnit.setIgnoreWhitespace(true)
+		DifferenceListener diffListener = new IgnoreNamedElementsDifferenceListener("CompletionTime")
+		Diff myDiff = new Diff(expectedPayload.getText(), reply)
+		myDiff.overrideDifferenceListener(diffListener)
+		assertTrue("Reply XML matches control XML " + myDiff,
+				myDiff.similar())
+
+		where:
+		testFileName | expectedFileName
+		'request1.xml' | 'reply1.xml'
 	}
 }
