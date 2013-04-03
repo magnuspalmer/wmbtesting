@@ -29,6 +29,7 @@ String MQ_JAVA_LIB_DIR = env['MQ_JAVA_INSTALL_PATH'] + '/lib'
 
 repositories {
 
+	mavenLocal()
 	maven { url "http://maven.springframework.org/release" }
 	mavenCentral()
 	maven {	url "https://repository.apache.org/content/repositories/snapshots/" }
