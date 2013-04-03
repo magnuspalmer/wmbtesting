@@ -42,11 +42,15 @@ class WmqRequestReplySpecificationTest extends Specification {
 
 	@Before
 	public void setup() {
-		XMLUnit.setIgnoreWhitespace(true)
+		XMLUnit.setIgnoreWhitespace(true)	
 		producer = camelContext.createProducerTemplate()
 	}
+	
+	@After
+	public void teardown(){
+		producer = null
+	}
 
-	@Ignore
 	def "Using Camel producer template with JMS for request/reply"() {
 
 		given: "A XML payload to send"
@@ -58,7 +62,7 @@ class WmqRequestReplySpecificationTest extends Specification {
 		String replyQ = "GET_REQREP_OUT"
 
 		when: "The request is sent"
-		def reply = producer.requestBody("wmq:$requestQ?replyTo=$replyQ&replyToType=Exclusive&useMessageIDAsCorrelationID=true",
+		def reply = producer.requestBody("wmq:$requestQ?replyTo=$replyQ&replyToType=Shared&useMessageIDAsCorrelationID=true",
 				testPayload, String.class)
 
 		then: "A reply is received"
@@ -67,7 +71,6 @@ class WmqRequestReplySpecificationTest extends Specification {
 		assertXpathEvaluatesTo("Braithwaite", "/SaleEnvelope/SaleList/Invoice/Surname", reply)
 	}
 
-	@Ignore
 	@Unroll
 	def "Using Camel producer template with JMS for request/reply :: test input file #testFileName should return expected surname #expectedSurname"() {
 
@@ -118,8 +121,7 @@ class WmqRequestReplySpecificationTest extends Specification {
 
 		where:
 		testFileName   | expectedFileName | requestQ 		| replyQ			| ignoreNamedElementsNames
-		'request1.xml' | 'reply1.xml'     | 'GET_REQREP_IN'	| 'GET_REQREP_OUT'	|  ['CompletionTime', 'SomeOtherElement']
-		'request2.xml' | 'reply2.xml'     | 'GET_REQREP_IN'	| 'GET_REQREP_OUT'	|  ['CompletionTime', 'SomeOtherElement']
-		
+		'request1.xml' | 'reply1.xml'     | 'GET_REQREP_IN'	| 'GET_REQREP_OUT'	|  [ 'CompletionTime', 'SomeOtherElement'	]
+		'request2.xml' | 'reply2.xml'     | 'GET_REQREP_IN'	| 'GET_REQREP_OUT'	|  [ 'CompletionTime']
 	}
 }
