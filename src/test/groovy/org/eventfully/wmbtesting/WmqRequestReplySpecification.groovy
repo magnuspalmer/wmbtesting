@@ -33,7 +33,7 @@ import org.springframework.test.context.ContextConfiguration
 import spock.lang.*
 
 @ContextConfiguration(classes = EmptyRouteCamelConfiguration.class)
-class WmqRequestReplySpecificationTest extends Specification {
+class WmqRequestReplySpecification extends Specification {
 
 	@Autowired
 	CamelContext camelContext
