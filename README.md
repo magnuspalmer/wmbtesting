@@ -28,7 +28,7 @@ Default is:
      qmgr.hostName=localhost
      qmgr.port=2414
      qmgr.queueManager=MB8QMGR
-     qmgr.channel=JMS.CHANNEL
+     qmgr.channel=SYSTEM.AUTO.SVRCONN
      #0 = binding, 1 = client, 8 = first binding, then client
      qmgr.transportType=1
 
