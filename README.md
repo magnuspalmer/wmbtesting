@@ -39,3 +39,8 @@ All you need is Java and you can run the Gradle build using gradlew or gradlew.b
 No need for Gradle or Groovy...
 
 gradlew.bat test to run the tests (it will download a gradle-wrapper dist).
+
+CI Builds:
+----------
+Since it requires a full WMBT+WMB+WMQ installation I do not have the infrastructure to make it happend as of now.
+
