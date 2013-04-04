@@ -32,12 +32,13 @@ repositories {
 	mavenLocal()
 	maven { url "http://maven.springframework.org/release" }
 	mavenCentral()
-	maven {	url "https://repository.apache.org/content/repositories/snapshots/" }
+// Needed if using Apache Camel snapshot builds.
+//	maven {	url "https://repository.apache.org/content/repositories/snapshots/" }
 }
 
 dependencies {
 	final SPRING_VERSION = '3.2.2.RELEASE'
-	final CAMEL_VERSION = '2.11-SNAPSHOT'
+	final CAMEL_VERSION = '2.10.4'
 	final SPOCK_VERSION = '0.7-groovy-2.0'
 	final SLF4J_VERSION = '1.7.5'
 	final GROOVY_VERSION= '2.1.1'
